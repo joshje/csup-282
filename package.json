@@ -1,0 +1,200 @@
+{
+  "private": true,
+  "name": "skyscanner-app",
+  "version": "5.18.0",
+  "description": "Skyscanner's mobile app - Android & iOS",
+  "main": "index.js",
+  "scripts": {
+    "precommit": "npm run lint:staged || sh scripts/check_npm_install.sh",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
+    "test:dbookf": "npm run test -- src/shared src/platform/core/networking src/features/DirectBooking",
+    "test:dbookf:ruc": "npm run test -- src/features/FlightsDirectBooking/ReturningUserCheckout",
+    "test:hotelsdbook": "npm run test -- src/features/HotelsDirectBooking",
+    "test:carhiredbook": "npm run test -- src/features/CarhireDirectBooking",
+    "test:sid": "npm run test -- src/platform/native_bridges src/platform/core/networking src/features/NID",
+    "test:silent": "jest --silent",
+    "jest:watch": "jest --watch",
+    "lint": "npm run lint:js",
+    "lint:js": "eslint . --ext .js,.jsx",
+    "lint:js:fix": "eslint . --ext .js,.jsx --fix",
+    "lint:staged": "lint-staged",
+    "storybook": "storybook start -p 7007",
+    "symbolicate": "node ./scripts/symbolicate.js",
+    "test:e2e:ios": "npm run test:e2e:ios:pods && npm run test:e2e:ios:build && npm run test:e2e:ios:run",
+    "test:e2e:ios:pods": "pushd ../ios/ && bundle exec rake project:setup && popd",
+    "test:e2e:ios:build": "detox build --configuration ios.debug",
+    "test:e2e:ios:run": "detox test --configuration ios.debug --loglevel verbose",
+    "test:e2e:android": "npm run test:e2e:android:build && npm run test:e2e:android:run",
+    "test:e2e:android:build": "detox build --configuration android.debug",
+    "test:e2e:android:run": "detox test --configuration android.debug --loglevel verbose"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "jest --bail --findRelatedTests",
+      "git add"
+    ]
+  },
+  "jest": {
+    "bail": true,
+    "forceExit": true,
+    "globals": {
+      "requestAnimationFrame": null
+    },
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/tests/fileMock.js",
+      "navigationModes": "<rootDir>/tests/native_bridges/mocks/mockNavigationModes.js",
+      "NativeLinksBridge": "<rootDir>/tests/native_bridges/mocks/mockNativeLinksBridge.js"
+    },
+    "preset": "react-native",
+    "reporters": [
+      "jest-dot-reporter"
+    ],
+    "setupFiles": [
+      "<rootDir>/tests/enzyme.setup.js"
+    ],
+    "transform": {
+      "^.+\\.jsx?$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-navigation|bpk|tcomb|done-bar)"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/tests/e2e/"
+    ],
+    "verbose": true
+  },
+  "optionalDependencies": {
+    "fsevents": "^1.1.3"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "bpk-svgs": "^5.17.0",
+    "bpk-tokens": "^26.7.4",
+    "card-validator": "^4.1.1",
+    "credit-card-type": "^6.1.0",
+    "done-bar": "^1.0.6",
+    "fsevents": "^1.1.3",
+    "intl": "^1.2.5",
+    "libphonenumber-js": "^1.0.24",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.3",
+    "moment-timezone": "^0.5.14",
+    "prop-types": "^15.5.10",
+    "react": "16.3.1",
+    "react-mixin": "^3.0.5",
+    "react-moment-proptypes": "^1.5.0",
+    "react-native": "0.55.3",
+    "react-native-auto-scroll": "0.0.1",
+    "react-native-awesome-card-io": "https://github.com/Skyscanner/react-native-awesome-card-io.git",
+    "react-native-bpk-component-animate-height": "^1.0.31",
+    "react-native-bpk-component-badge": "^1.0.1",
+    "react-native-bpk-component-banner-alert": "^4.0.3",
+    "react-native-bpk-component-button": "^7.0.0",
+    "react-native-bpk-component-button-link": "^3.0.2",
+    "react-native-bpk-component-card": "^1.2.11",
+    "react-native-bpk-component-horizontal-nav": "^2.1.0",
+    "react-native-bpk-component-icon": "^1.8.0",
+    "react-native-bpk-component-navigation-bar": "^2.0.0",
+    "react-native-bpk-component-panel": "^1.0.1",
+    "react-native-bpk-component-spinner": "^1.0.24",
+    "react-native-bpk-component-switch": "^1.0.23",
+    "react-native-bpk-component-text": "^2.1.40",
+    "react-native-bpk-component-text-input": "^2.2.0",
+    "react-native-bpk-component-touchable-native-feedback": "^1.0.0",
+    "react-native-bpk-component-touchable-overlay": "^1.0.17",
+    "react-native-bpk-styles": "^1.0.7",
+    "react-native-bpk-theming": "^1.0.36",
+    "react-native-dash": "^0.0.8",
+    "react-native-hyperlink": "0.0.11",
+    "react-native-keyboard-aware-scroll-view": "^0.4.1",
+    "react-native-linear-gradient": "github:react-native-community/react-native-linear-gradient#f2644221f5d8b97c892ce9b53a773809d3a7626e",
+    "react-native-maps": "0.17.1",
+    "react-native-modal": "^6.1.0",
+    "react-native-remote-svg": "^1.1.1",
+    "react-native-safe-area-view": "^0.7.0",
+    "react-native-size-matters": "^0.1.0",
+    "react-native-svg": "^6.2.2",
+    "react-native-uuid": "^1.4.9",
+    "react-navigation": "^1.1.2",
+    "react-redux": "^5.0.5",
+    "react-timer-mixin": "^0.13.3",
+    "recompose": "^0.26.0",
+    "recyclerlistview": "^1.2.6",
+    "redux": "^3.7.1",
+    "redux-persist": "^4.8.2",
+    "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1",
+    "tcomb": "^3.2.24",
+    "tcomb-form-native": "^0.6.11",
+    "tcomb-json-schema": "^0.3.2",
+    "tinymask": "^1.0.2",
+    "twix": "^1.2.1",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^3.2.12",
+    "@storybook/addon-knobs": "^3.2.12",
+    "@storybook/react-native": "^3.2.12",
+    "argparse": "^1.0.10",
+    "babel-eslint": "^7.2.3",
+    "babel-jest": "22.1.0",
+    "babel-plugin-codegen": "^1.3.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+    "babel-preset-react-native": "^4.0.0",
+    "check-dependencies": "^1.1.0",
+    "detox": "7.3.4",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
+    "eslint": "^4.12.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-config-skyscanner": "^2.0.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "jest-dot-reporter": "^1.0.3",
+    "jest-react-native": "^18.0.0",
+    "jsdom": "^11.6.2",
+    "jsdom-global": "^3.0.2",
+    "lint-staged": "^7.0.4",
+    "react-dom": "16.3.1",
+    "react-native-obfuscating-transformer": "^1.0.0-rc.0",
+    "react-test-renderer": "16.3.1",
+    "redux-logger": "^3.0.6",
+    "redux-mock-store": "^1.3.0",
+    "remote-redux-devtools": "^0.5.12",
+    "source-map": "^0.5.7"
+  },
+  "detox": {
+    "test-runner": "jest",
+    "runner-config": "tests/e2e/config.json",
+    "specs": "e2e",
+    "configurations": {
+      "ios.debug": {
+        "binaryPath": "../ios/build/Build/Products/Debug-iphonesimulator/Skyscanner.app",
+        "build": "xcodebuild -workspace '../ios/Project/Working/Skyscanner.xcworkspace' -scheme 'Skyscanner' -sdk iphonesimulator -derivedDataPath '../ios/build' | xcpretty",
+        "type": "ios.simulator",
+        "name": "iPhone X"
+      },
+      "ios.none": {
+        "binaryPath": "",
+        "type": "ios.none",
+        "name": "iPhone X",
+        "session": {
+          "server": "ws://localhost:8099",
+          "sessionId": "Skyscanner.Go.iOS"
+        }
+      },
+      "android.debug": {
+        "binaryPath": "../android/src/app/build/outputs/apk/base/debug/Go.Android.App-base-debug.apk",
+        "build": "cd ../android/src && ./gradlew assembleBaseDebug assembleBaseDebugAndroidTest -DtestBuildType=debug && cd ../../react-native",
+        "type": "android.emulator",
+        "name": "Nexus_5X_API_26"
+      }
+    }
+  }
+}
